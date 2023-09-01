@@ -24,6 +24,7 @@ import {MdWork} from 'react-icons/md'
 import {FaDiceD6, FaBuilding} from 'react-icons/fa'
 import {ImSearch} from 'react-icons/im'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/authContext'
 
 const Links = ['Jobs', 'Companies', 'Profile']
 
@@ -50,11 +51,32 @@ const NavLink = (props) => {
 export default function WithAction() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const [auth, setAuth] = useAuth()
   const navigate = useNavigate();
-
+  const id = auth?.user?._id;
+  // console.log(id);
   const handleClick=()=>{
-      navigate('/CompanyDashboard')
+      navigate(`/CompanyDashboard/${id}`)
   }
+
+  const handleLogin=()=>{
+      navigate('/login')
+  }
+  
+  const handleSignup=()=>{
+      navigate('/signup')
+  }
+
+  const handleLogout=()=>{
+    setAuth({
+      ...auth,
+      user: null,
+      token: ''
+    })
+    localStorage.removeItem('auth')
+    navigate('/login')
+  }
+
   return (
     <>
       <Box bg={useColorModeValue('white', 'gray.900')} px={4}>
@@ -82,22 +104,84 @@ export default function WithAction() {
                 <Icon as={FaBuilding} color='rgb(238,122,109)' mr={2}/>
                 Companies
               </NavLink>
-              <NavLink>
-                <Icon as={FaDiceD6} color='rgb(238,122,109)' mr={2}/>
-                Profile
-              </NavLink>
+              {
+                auth?.user?.role === "Employer" ? (
+                  <>
+                  <NavLink>
+                    <Icon as={FaDiceD6} color='rgb(238,122,109)' mr={2}/>
+                    Dashboard
+                  </NavLink>
+                  </>
+                ): (
+                  <>
+                  <NavLink>
+                    <Icon as={FaDiceD6} color='rgb(238,122,109)' mr={2}/>
+                    Profile
+                  </NavLink>
+                  </>
+                )
+              }
             </HStack>
           </HStack>
           <Flex alignItems={'center'}>
-            <Button
-              variant={'solid'}
-              bgColor= 'rgb(238,120,107)'
-              color= 'white'
-              size={'sm'}
-              mr={4}
-              >
-              Signup
-            </Button>
+            {
+              !auth.user  ? (
+                <>
+                <Button
+                  variant={'solid'}
+                  bgColor= 'rgb(238,120,107)'
+                  color= 'white'
+                  size={'sm'}
+                  mr={4}
+                  onClick={handleLogin}
+                  >
+                  LogIn
+                </Button>
+                <Button
+                  variant={'solid'}
+                  bgColor= 'rgb(238,120,107)'
+                  color= 'white'
+                  size={'sm'}
+                  mr={4}
+                  onClick={handleSignup}
+                  >
+                  SignUp
+                </Button>
+                </>
+              ): (
+                <>
+                <Button
+                  variant={'solid'}
+                  bgColor= 'rgb(238,120,107)'
+                  color= 'white'
+                  size={'sm'}
+                  mr={4}
+                  onClick={handleLogout}
+                  >
+                  Logout
+                </Button>
+                </>
+              )
+            }
+            {
+              auth?.user?.role === 'Employer' ? (
+                <>
+                <Button
+                  variant={'solid'}
+                  bgColor= 'rgb(238,120,107)'
+                  color= 'white'
+                  size={'sm'}
+                  mr={4}
+                  onClick={()=>{navigate(`/jobPostForm/${id}`)}}
+                  >
+                  Post a Job
+                </Button>
+                </>
+              ) : (
+                <>
+                </>
+              )
+            }
             <Menu>
               <MenuButton
                 as={Button}
@@ -119,10 +203,10 @@ export default function WithAction() {
                   mr={2}
                 />
               </MenuButton>
-                <Text>Khushi77</Text>
+                <Text>{auth?.user?.userName}</Text>
               <MenuList>
                 <MenuItem>Profile</MenuItem>
-                <MenuItem onClick={handleClick}>Dashboard</MenuItem>
+                <MenuItem onClick={() => handleClick()}>Dashboard</MenuItem>
                 <MenuDivider />
                 <MenuItem>Logout</MenuItem>
               </MenuList>

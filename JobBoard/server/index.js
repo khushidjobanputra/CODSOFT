@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.js';  
 import jobRoutes from './routes/jobRoutes.js';  
+import applicationRoutes from './routes/applicationRoutes.js'
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser'
 
@@ -33,6 +34,7 @@ app.use(cookieParser())
 //routes
 app.use('/user', userRoutes)
 app.use('/jobs', jobRoutes)
+app.use('/application', applicationRoutes)
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);

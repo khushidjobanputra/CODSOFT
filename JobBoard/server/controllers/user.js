@@ -4,12 +4,12 @@ import jwt from 'jsonwebtoken'
 
 export const signup = async(req, res) =>{
 
-    const {firstName, lastName, email, password, confirmPassword, role} = req.body;
+    const {userName, email, password, confirmPassword, role} = req.body;
 
     try{
-        const exisitingUser = await user.findOne({email});
+        const existingUser = await user.findOne({email});
 
-        if(exisitingUser){
+        if(existingUser){
             return res.status(400).json({message: 'E-mail already registered'});
         }
 
@@ -20,7 +20,7 @@ export const signup = async(req, res) =>{
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const User = await user.create({
-            firstName, lastName, email, password: hashedPassword, role
+            userName, email, password: hashedPassword, role
         })
         // console.log(User)
 
@@ -38,13 +38,13 @@ export const signin = async(req, res) =>{
     const {email, password} = req.body;
 
     try{
-        const exisitingUser = await user.findOne({email});
+        const existingUser = await user.findOne({email});
 
-        if(!exisitingUser){
+        if(!existingUser){
             return res.status(404).json({message: 'User does not exist'});
         }
 
-        const iscorrectPassword = await bcrypt.compare(password, exisitingUser.password);
+        const iscorrectPassword = await bcrypt.compare(password, existingUser.password);
 
         if(!iscorrectPassword){
             return res.status(400).json({message: "Invalid Credentials"});
@@ -52,9 +52,9 @@ export const signin = async(req, res) =>{
 
         // console.log(exisitingUser)
 
-        const token = jwt.sign({email: exisitingUser.email, id: exisitingUser._id}, 'test', {expiresIn: "1h"});
+        const token = jwt.sign({email: existingUser.email, id: existingUser._id}, 'test', {expiresIn: "1h"});
 
-        res.status(200).json({message: 'User logged in successfully', exisitingUser, token})
+        res.status(200).json({message: 'User logged in successfully', existingUser, token})
     }catch(error){
         res.status(500).json({message: 'Something went wrong'});
     }

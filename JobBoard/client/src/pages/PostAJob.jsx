@@ -1,18 +1,18 @@
 import { SimpleGrid , Box, Flex, Grid} from '@chakra-ui/react';
 import React from 'react';
 import Profile from '../components/home/profile/Profile';
-import WorkExperience from '../components/home/profile/WorkExperience';
-import Skills from '../components/home/profile/Skills';
-import CompanyDetail from '../components/company/CompanyDetail';
+import AllJobPosts from '../components/company/AllJobPosts';
+import JobPostForm from '../components/company/JobPostForm';
+import { useAuth } from '../context/authContext';
 import { useParams } from 'react-router-dom';
 
-const CompanyDetails = () => {
+const PostAJob = () => {
 
+  const [ auth, setAuth] = useAuth();
+  const heading = auth?.user?.userName;
+  const subHeading = 'Hiring';
+  const buttonLabel = 'View all job posts'
   const {id} = useParams();
-
-  const heading = 'Khushi Jobanputra';
-  const subHeading = 'Junior react developer';
-  const buttonLabel = 'View Profile'
 
   return (
     <Box bgColor={'rgb(248,250,252)'} p={5} display='flex' spacing='10px'> 
@@ -21,15 +21,13 @@ const CompanyDetails = () => {
           <Flex flexDirection='column'>
             <SimpleGrid columns={[1, null, 1]} spacing='15px'>
               <Profile heading={heading} subHeading={subHeading} buttonLabel={buttonLabel}/>
-              <WorkExperience />
-              <Skills />
             </SimpleGrid>
           </Flex>
         </Box>
         <Box width={'70vw'}>
             <Flex flexDirection='column'>
                 <SimpleGrid columns={[1, null, 1]} spacing='15px'>
-                    <CompanyDetail id={id} />
+                  <JobPostForm id={id} />
                 </SimpleGrid>
             </Flex>
         </Box>
@@ -38,4 +36,4 @@ const CompanyDetails = () => {
   );
 };
 
-export default CompanyDetails;
+export default PostAJob;

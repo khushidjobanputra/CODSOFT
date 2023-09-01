@@ -18,10 +18,10 @@ const jobModel = mongoose.Schema({
         default: [],
         required: true
     },
-    numberOfEmployees:{
+    numberOfOpenings:{
         type: Number
     },
-    location:{
+    locations:{
         type: [String],
         default: [],
         required: true
@@ -29,11 +29,7 @@ const jobModel = mongoose.Schema({
     experience:{
         type: Number,
     },
-    logo:{
-        type: String,
-        required: true
-    },
-    Jobrole:{
+    jobRole:{
         type: String,
         required: true
     },
@@ -54,7 +50,11 @@ const jobModel = mongoose.Schema({
     applicationDeadline: {
         type: Date,
         required: true
-    }
+    },
+    companyId: {
+        type: String, 
+        required: true  
+    },
 })
 
 export default mongoose.model("jobModel", jobModel)

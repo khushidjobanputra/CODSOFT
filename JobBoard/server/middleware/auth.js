@@ -7,6 +7,7 @@ export const isAuthenticated = async(req, res, next) =>{
         const authHeader = req.header('Authorization');
 
         if (!authHeader) {
+            console.log("auth error")
             return res.sendStatus(401); // Unauthorized
         }
         
@@ -37,11 +38,26 @@ export const isEmployer = async (req, res, next) => {
     try {
         const User = await user.findById(req.userId);
         
-        if(User.role === 'employer') {
+        if(User.role === 'Employer') {
             next();
         }
         else {
             res.status(401).json({ message: "Only for employer" })
+        }
+    } catch (error) {
+        res.status(401).json({ message: error.message });
+    }
+}
+export const isCandidate = async (req, res, next) => {
+
+    try {
+        const User = await user.findById(req.userId);
+        
+        if(User.role === 'Candidate') {
+            next();
+        }
+        else {
+            res.status(401).json({ message: "Only for Candidates" })
         }
     } catch (error) {
         res.status(401).json({ message: error.message });

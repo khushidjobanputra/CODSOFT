@@ -9,9 +9,12 @@ import ExperienceLevel from '../components/home/filters/ExperienceLevel';
 import Location from '../components/home/filters/Location';
 import JobType from '../components/home/filters/JobType';
 import JobRole from '../components/home/filters/JobRole';
+import { useAuth } from '../context/authContext';
 
 const HomePage = () => {
-  const heading = 'Khushi Jobanputra';
+  const [auth, setAuth] = useAuth()
+
+  const heading = auth?.user?.userName;
   const subHeading = 'Junior react developer';
   const buttonLabel = 'View Profile'
 
@@ -24,6 +27,7 @@ const HomePage = () => {
               <Profile heading={heading} subHeading={subHeading} buttonLabel={buttonLabel}/>
               <WorkExperience />
               <Skills />
+              {/* <p>{JSON.stringify(auth.user.email)}</p> */}
             </SimpleGrid>
           </Flex>
         </Box>
