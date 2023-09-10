@@ -48,28 +48,28 @@ return (
                         <TabPanels>
                             <TabPanel>
                             
-                            <Text mb={5}> <Icon as={FaLocationDot}/>Locations</Text>
+                            <Text as='b'> <Icon as={FaLocationDot}/>Locations</Text>
                             {
                                 job.locations?.map((location)=>(
                                     <Text>{location}</Text>
                                 ))
                             }
 
-                            <SimpleGrid columns={[2,null,4]} spacing={10} mb={8}>
+                            <SimpleGrid columns={[2,null,4]} spacing={10} mb={8} mt={5}>
                                 <Box>
-                                    <Text> <Icon as={MdOutlineNotStarted} mt={1}/> Start Date</Text>
+                                    <Text as='b'> <Icon as={MdOutlineNotStarted} mt={1}/> Start Date</Text>
                                     <Text>Immediately</Text>
                                 </Box>
                                 <Box>
-                                    <Text> <Icon as={LiaMoneyBillSolid} mt={1}/> Salary</Text>
+                                    <Text as='b'> <Icon as={LiaMoneyBillSolid} mt={1}/> Salary</Text>
                                     <Text>{job.salary.min}-{job.salary.max}/Month</Text>
                                 </Box>
                                 <Box>
-                                    <Text> <Icon as={MdOutlineWorkOutline} mt={1}/> Experience</Text>
+                                    <Text as='b'> <Icon as={MdOutlineWorkOutline} mt={1}/> Experience</Text>
                                     <Text>{job.experience} year</Text>
                                 </Box>
                                 <Box>
-                                    <Text> <Icon as={RxLapTimer} mt={1}/> Application Deadline</Text>
+                                    <Text as='b'> <Icon as={RxLapTimer} mt={1}/> Application Deadline</Text>
                                     <Text>{job.applicationDeadline}</Text>
                                 </Box>
                             </SimpleGrid>
@@ -79,7 +79,7 @@ return (
                             <HStack mb={8} spacing={5}>
                                 {
                                     job.skills?.map((skill)=>(
-                                        <Tag sixe='lg' variant='solid' bgColor='rgb(238,120,107)' p={2}>
+                                        <Tag sixe='lg' variant='solid' bgColor='rgb(238,120,107)' p={2} fontSize='15px'>
                                         {skill}
                                         </Tag>
                                     ))
@@ -99,6 +99,7 @@ return (
                             size={'md'}
                             width='10rem'
                             p={2}
+                            sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
                             >
                             Apply
                             </Button>

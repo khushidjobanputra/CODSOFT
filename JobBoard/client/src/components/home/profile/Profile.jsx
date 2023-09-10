@@ -19,7 +19,7 @@ const Profile = ({heading, subHeading, buttonLabel}) => {
                 <Button
                     bgColor={'rgb(248,250,252)'}
                     color={'#2A9FB9'}
-                    mt={2}
+                    mt={2}  
                 >{buttonLabel}</Button>
             </Stack>
             </CardBody>

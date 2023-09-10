@@ -7,6 +7,7 @@ import {
   Textarea,
   Button,
   useToast,
+  Heading,
 } from '@chakra-ui/react';
 import { useAuth } from '../../context/authContext';
 import axios from 'axios';
@@ -28,7 +29,6 @@ const ApplicationForm = ({id}) => {
   const authToken = userData.token;
 
   const [step, setStep] = useState(0);
-  // const [formData, setFormData] = useState({projectLinks: []});
   const [formData, setFormData] = useState({projectLinks: [], companyId: `${id}`, user: userData.existingUser._id});
   const [auth, setAuth] = useAuth()
   const [projectLinks, setProjectLinks] = useState([]);
@@ -36,9 +36,6 @@ const ApplicationForm = ({id}) => {
   const [newProjectLink, setNewProjectLink] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
-
-  // console.log(auth?.user)
-  // console.log(id)
 
   const handleNext = () => {
     if (step < steps.length - 1) {
@@ -86,6 +83,7 @@ const ApplicationForm = ({id}) => {
   const handleSubmit = async() =>{
 
     try{
+      console.log(formData);
       const response = await axios.post(`${process.env.REACT_APP_API}/application/create`, formData, {
         method: 'POST',
         headers: { 
@@ -93,16 +91,44 @@ const ApplicationForm = ({id}) => {
           'Authorization': `Bearer ${authToken}`
         },
       })
+      console.log(response)
+      const res= await axios.post(`${process.env.REACT_APP_API}/application/create?jobId=${formData.companyId}`, formData, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${authToken}`
+        },
+      })
+      console.log(res);
+
+      const resp = await axios.post(`${process.env.REACT_APP_API}/api/sendEmail`, {
+        to: 'palakdjobanputra73460@gmail.com',
+        subject: 'Application submitted successfully',
+        text: 'Your application is submitted successfully. Thank you for submitting.',
+      },  {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${authToken}`
+        },
+      });
+
+      console.log(resp)
+      if (resp.status === 200) {
+        console.log('Email sent successfully');
+      } else {
+        console.error('Error sending email');
+      }
 
       if(response.status === 201){
         toast({
-          title: `Job posted successfully`,
+          title: `Application submitted successfully`,
           position: 'top-right',
           status: 'success',
           isClosable: true,
         })
         navigate('/')
-        Router.refresh();
+        window.location.reload();
       }
       else{
         toast({
@@ -124,9 +150,9 @@ const ApplicationForm = ({id}) => {
   },[])
 
   return (
-    <Box maxWidth="500px" mx="auto" p="4">
+    <Box width="500px" mx="auto" p="4">
       <FormControl mb="4">
-        <FormLabel>{steps[step]}</FormLabel>
+        <FormLabel><Heading size='lg' color='#EE7A6D'>{steps[step]}</Heading></FormLabel>
         {/* Example: Step 0 */}
         {step === 0 && (
           <>
@@ -157,7 +183,7 @@ const ApplicationForm = ({id}) => {
           <>
              <FormControl mb="4">
                 <FormLabel>Upload Resume/CV</FormLabel>
-                <Input type="file" accept=".pdf,.doc,.docx"  />
+                <Input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleInputChange('resume', e.target.files[0])} />
             </FormControl>
           </>
         )}
@@ -213,12 +239,12 @@ const ApplicationForm = ({id}) => {
                       onChange={handleProjectLinkChange}
                       mb="2"
                     />
-                    <Button colorScheme="teal" onClick={handleSaveProjectLink}>
+                    <Button colorScheme="teal" onClick={handleSaveProjectLink} sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}> 
                       Save Project Link
                     </Button>
                   </>
                 ) : (
-                  <Button colorScheme="teal" onClick={handleAddProjectLink}>
+                  <Button colorScheme="teal" onClick={handleAddProjectLink} sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}>
                     Add Project Link
                   </Button>
                 )}
@@ -235,11 +261,13 @@ const ApplicationForm = ({id}) => {
       <Button
         colorScheme="teal"
         onClick={handlePrevious}
-        disabled={step === 0}>
+        disabled={step === 0}
+        sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
+        >
         Previous
       </Button>
       {step === steps.length - 1 ? (
-        <Button colorScheme="teal" ml="2" onClick={handleSubmit}>
+        <Button colorScheme="teal" ml="2" onClick={handleSubmit} sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}>
           Submit
         </Button>
       ) : (
@@ -248,6 +276,7 @@ const ApplicationForm = ({id}) => {
           ml="2"
           onClick={handleNext}
           disabled={step === steps.length - 1}
+          sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
         >
           Next
         </Button>

@@ -5,14 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/authContext';
 import { JobProvider } from './context/jobContext';
+import { SearchProvider } from './context/searchContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthProvider>
   <JobProvider>
+  <SearchProvider>
     <React.StrictMode>
       <App />
     </React.StrictMode>
+  </SearchProvider>
   </JobProvider>
   </AuthProvider>
 );

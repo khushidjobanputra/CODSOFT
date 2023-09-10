@@ -52,14 +52,14 @@ const AllJobPosts = ({id}) => {
                                         <Text color='#CCD2D7'>{jobPost.companyName} - {jobPost.employmentType}</Text>
                                     </Box>
                                 </Box>
-                                <Button
+                                {/* <Button
                                     bgColor={'rgb(248,250,252)'}
                                     color={'#2A9FB9'}
                                     mb={5}
                                 >
                                     Save Job
                                     <Icon as={BsBookmarkDashFill} ml={2}/>
-                                </Button>
+                                </Button> */}
                             </Box>
                             <Box>
                                 <Text color='#CCD2D7'>{jobPost.description}</Text>
@@ -88,8 +88,8 @@ const AllJobPosts = ({id}) => {
                                 size={'md'}
                                 width='10rem'
                                 p={2}
-                                // onClick={handleClick}
                                 onClick={() =>handleClick(jobPost.companyName, jobPost._id)}
+                                sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
                                 >
                                 View Applicants
                                 </Button>

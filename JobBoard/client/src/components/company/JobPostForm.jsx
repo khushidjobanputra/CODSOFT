@@ -13,7 +13,7 @@ const JobPostForm = ({id}) => {
   const [locationInput, setLocationInput] = useState('');
   const [salary, setSalary] = useState([50000, 100000]);
   const [companyName, setCompanyName] = useState('');
-  const [companyLogo, setCompanyLogo] = useState('');
+  const [companyLogo, setCompanyLogo] = useState(null);
   const [jobRole, setJobRole] = useState('');
   const [numberOfOpenings, setNoOfOpenings] = useState('');
   const [experience, setExperience] = useState('');
@@ -47,8 +47,6 @@ const JobPostForm = ({id}) => {
     setLocations(locations.filter((s) => s !== location));
   };
 
-//   const [selectedImage, setSelectedImage] = useState(null);
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setCompanyLogo(file);
@@ -57,12 +55,12 @@ const JobPostForm = ({id}) => {
   const userDataString = localStorage.getItem('auth');
   const userData = JSON.parse(userDataString);
   const authToken = userData.token;
-  const data = {companyName, title, description, jobRole, numberOfOpenings, experience, skills, locations, employmentType, companyLogo, applicationDeadline, 
+  const data = {companyName, title, description, jobRole, numberOfOpenings, experience, skills, locations, employmentType, applicationDeadline, 
     salary: {
         min: salary[0],
         max: salary[1],
       },
-      companyId: `${id}`
+    companyId: `${id}`,
   }
 
   const handlePost = async(e)=>{
@@ -73,7 +71,7 @@ const JobPostForm = ({id}) => {
         const response = await axios.post(`${process.env.REACT_APP_API}/jobs/create`, data,{
             method: 'Post',
             headers: { 
-                'Content-Type': 'application/json', 
+                'Content-Type': 'multipart/form-data', 
                 'Authorization': `Bearer ${authToken}`
             },
         })
@@ -114,7 +112,7 @@ const JobPostForm = ({id}) => {
                         <FormLabel>Company Name</FormLabel>
                         <Input placeholder='Company Name' mb={5} value={companyName} onChange={(e)=> {setCompanyName(e.target.value)}}/>
                         <FormLabel>Company Logo</FormLabel>
-                        <Input type="file" accept="image/*" onChange={handleImageChange}  mb={5}/>
+                        <Input type="file" accept="image/*" onChange={(e)=>handleImageChange(e)}  mb={5}/>
                         <FormLabel>Title</FormLabel>
                         <Input placeholder='title' mb={5} value={title} onChange={(e)=> {setTitle(e.target.value)}}/>
                         <Box mb="2">
@@ -132,6 +130,7 @@ const JobPostForm = ({id}) => {
                                 marginTop={2}
                                 color='white'
                                 mb={5}
+                                sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
                             >
                                 Add Skill
                             </Button>
@@ -244,6 +243,7 @@ const JobPostForm = ({id}) => {
                     width='30%'
                     color='white'
                     onClick={handlePost}
+                    sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
                 >
                     Post Job
                 </Button>

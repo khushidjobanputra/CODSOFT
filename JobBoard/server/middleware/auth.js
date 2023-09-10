@@ -1,37 +1,41 @@
 import jwt from 'jsonwebtoken'
 import user from '../models/user';
+import multer from 'multer';
+const storage = multer.memoryStorage();
+const upload = multer({ storage }); 
 
-export const isAuthenticated = async(req, res, next) =>{
+export const uploadResume = upload.single('resume'); 
 
-    try {
-        const authHeader = req.header('Authorization');
+export const isAuthenticated = async (req, res, next) => {
+  try {
+    const authHeader = req.header('Authorization');
 
-        if (!authHeader) {
-            console.log("auth error")
-            return res.sendStatus(401); // Unauthorized
-        }
-        
-        const token = authHeader.split(' ')[1];
-        
-        const isCustomAuth = token.length < 500;
-
-        let decodedData;
-
-        if(token && isCustomAuth) {
-            decodedData = jwt.verify(token, 'test');
-
-            req.userId = decodedData?.id;
-        } else {
-            decodedData = jwt.decode(token);
-
-            req.userId = decodedData?.sub;
-        }
-
-        next();
-    } catch (error) {
-        console.log(error);
+    if (!authHeader) {
+      return res.status(401).json({ message: 'Authentication failed: Missing token' });
     }
-}
+
+    const token = authHeader.split(' ')[1];
+
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication failed: Invalid token format' });
+    }
+
+    // Verify and decode the token
+    jwt.verify(token, 'test', (err, decodedData) => {
+      if (err) {
+        return res.status(401).json({ message: 'Authentication failed: Invalid token' });
+      }
+
+      req.userId = decodedData?.id; // Store the user ID in the request
+
+      next();
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 export const isEmployer = async (req, res, next) => {
 

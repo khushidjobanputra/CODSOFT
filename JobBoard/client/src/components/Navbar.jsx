@@ -98,25 +98,21 @@ export default function WithAction() {
             <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
               <NavLink>
                 <Icon as={MdWork} color='rgb(238,122,109)' mr={2}/>
-                Jobs
-              </NavLink>
-              <NavLink>
-                <Icon as={FaBuilding} color='rgb(238,122,109)' mr={2}/>
-                Companies
+                <a href='/jobs'>Jobs</a>
               </NavLink>
               {
                 auth?.user?.role === "Employer" ? (
                   <>
                   <NavLink>
                     <Icon as={FaDiceD6} color='rgb(238,122,109)' mr={2}/>
-                    Dashboard
+                    <a href='/'>Dashboard</a>
                   </NavLink>
                   </>
                 ): (
                   <>
                   <NavLink>
                     <Icon as={FaDiceD6} color='rgb(238,122,109)' mr={2}/>
-                    Profile
+                    <a href='/profile'>Profile</a>
                   </NavLink>
                   </>
                 )
@@ -134,6 +130,7 @@ export default function WithAction() {
                   size={'sm'}
                   mr={4}
                   onClick={handleLogin}
+                  sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
                   >
                   LogIn
                 </Button>
@@ -144,6 +141,7 @@ export default function WithAction() {
                   size={'sm'}
                   mr={4}
                   onClick={handleSignup}
+                  sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
                   >
                   SignUp
                 </Button>
@@ -157,6 +155,7 @@ export default function WithAction() {
                   size={'sm'}
                   mr={4}
                   onClick={handleLogout}
+                  sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
                   >
                   Logout
                 </Button>
@@ -173,6 +172,7 @@ export default function WithAction() {
                   size={'sm'}
                   mr={4}
                   onClick={()=>{navigate(`/jobPostForm/${id}`)}}
+                  sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
                   >
                   Post a Job
                 </Button>
@@ -197,7 +197,7 @@ export default function WithAction() {
                   src={
                     'https://bit.ly/broken-link'
                   }
-                  name='Khushi Jobanputra'
+                  name={auth?.user?.userName}
                   bgColor= 'rgb(238,120,107)'
                   color= 'white'
                   mr={2}
@@ -205,10 +205,19 @@ export default function WithAction() {
               </MenuButton>
                 <Text>{auth?.user?.userName}</Text>
               <MenuList>
-                <MenuItem>Profile</MenuItem>
-                <MenuItem onClick={() => handleClick()}>Dashboard</MenuItem>
-                <MenuDivider />
-                <MenuItem>Logout</MenuItem>
+                {
+                  auth?.user?.role === 'Employer' ? (
+                    <>
+                      <MenuItem onClick={() => handleClick()}>Dashboard</MenuItem>
+                      <MenuItem>Logout</MenuItem>
+                    </>
+                  ): (
+                    <>
+                      <MenuItem onClick={() => navigate(`/Profile/${id}`)}>Profile</MenuItem>
+                      <MenuItem>Logout</MenuItem>
+                    </>
+                  )
+                }
               </MenuList>
             </Menu>
           </Flex>

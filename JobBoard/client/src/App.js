@@ -9,6 +9,8 @@ import JobApplicants from './pages/JobApplicants';
 import PostAJob from './pages/PostAJob';
 import SignUp from './pages/authForms/SignUp';
 import SignIn from './pages/authForms/signIn';
+import Profile from './pages/Profile';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -16,13 +18,17 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/' element={<HomePage />}/>
+          <Route path='/' element={<Home />}/>
+          <Route path='/jobs' element={<HomePage />}/>
+          <Route path='/jobs/search' element={<HomePage />}/>
+          <Route path='/jobs/filters' element={<HomePage />}/>
           <Route path='/signup' element={<SignUp />}/>
           <Route path='/login' element={<SignIn />}/>
           <Route path='/CompanyDetails/:id' element={<CompanyDetails />}/>
           <Route path='/CompanyDashboard/:id' element={<CompanyDashboard />}/>
           <Route path='/jobApplicants' element={<JobApplicants />}/>
           <Route path='/jobPostForm/:id' element={<PostAJob />}/>
+          <Route path='/Profile/:id' element={<Profile />}/>
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
@@ -30,3 +36,16 @@ function App() {
 }
 
 export default App;
+
+/*
+One big stupid mistake i was doing from two days wasted so much time
+i wanted to store jobPosts after applying filters and i was doing it
+let jobPosts = [];
+jobPosts = response.data;
+
+and by doing 
+const [jobPosts, setJobPosts] = useState([]);
+setJobPosts(response.data)
+
+it was solved very silyy mistake
+*/

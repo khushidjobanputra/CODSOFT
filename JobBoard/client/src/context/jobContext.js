@@ -10,6 +10,7 @@ const JobProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API}/jobs`);
+        // console.log(response)
         setJobs(response.data);
       } catch (error) {
         console.error('Error fetching jobs:', error);

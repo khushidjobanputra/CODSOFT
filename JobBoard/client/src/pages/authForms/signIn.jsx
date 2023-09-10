@@ -9,15 +9,18 @@ import {
   Button,
   Text,
   Grid,
-  useToast
+  useToast,
+  IconButton
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import {ViewOffIcon} from '@chakra-ui/icons'
+import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import axios from 'axios';
 import { useAuth } from '../../context/authContext';
 
 const SignIn = () => {
 
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClick = () => setShowPassword(!showPassword)
     const toast = useToast()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -64,12 +67,11 @@ const SignIn = () => {
     <Flex
       align="center"
       justify="center"
-      minHeight="100vh"
-      backgroundColor="#E0E3E9"
-      p={4}
+      minHeight="90vh"
+      backgroundColor="#F4F8FF"
     >
       <Box
-        width="90%"
+        width="70%"
         height="90%"
         p={2}
         backgroundColor="white"
@@ -102,30 +104,40 @@ const SignIn = () => {
 
             <InputGroup mt={4}>
               <Input
-                type="password"
                 placeholder="Password"
+                type={showPassword ? 'text' : 'password'}
                 boxShadow="#E0EDFB"
                 size='lg'
                 onChange={(e)=> setPassword(e.target.value)}
                 value={password}
                 />
               <InputRightElement position='relative'>
-                <ViewOffIcon mr={20} mt={2}/>
+                <IconButton
+                  icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  mr={20}
+                  mt={2}
+                  onClick={handleClick}
+                />
               </InputRightElement>
             </InputGroup>
 
             <Button
-              bgColor='#FE6B68'
+              bgColor='rgb(238,120,107)'
               boxShadow="#E8D5E6"
               mt={6}
               size='lg'
               color='white'
               onClick={handleLogin}
+              mb={3}
+              sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
               >
               Sign In
             </Button>
-            <Text>New to JobPortal?</Text>
-            <Text onClick={()=>{navigate('/signup')}} cursor={'pointer'}>Register</Text>
+            <Box display='flex' flexDirection='row'>
+              <Text>New to JobPortal? </Text>
+              <Text onClick={()=>{navigate('/signup')}} cursor={'pointer'} sx={{'_hover': {color: 'rgb(238,120,107)'}}}>Register</Text>
+            </Box>
             </Grid>
           </Box>
         </Flex>

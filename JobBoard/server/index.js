@@ -7,9 +7,13 @@ import jobRoutes from './routes/jobRoutes.js';
 import applicationRoutes from './routes/applicationRoutes.js'
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser'
+import sendEmail from './routes/sendEmail.js'
+import multer from 'multer';
 
 const app = express()
 dotenv.config();
+const storage = multer.memoryStorage(); // Store file in memory as a buffer
+const upload = multer({ storage });
 
 //port
 const PORT = process.env.PORT || 8000
@@ -35,6 +39,7 @@ app.use(cookieParser())
 app.use('/user', userRoutes)
 app.use('/jobs', jobRoutes)
 app.use('/application', applicationRoutes)
+app.use('/api', sendEmail)
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);

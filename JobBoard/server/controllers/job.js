@@ -41,6 +41,62 @@ export const getJob = async(req, res) =>{
     }
 }
 
+export const getJobsBySearch = async (req, res) => {
+    try {
+      const { jobRole } = req.query;
+  
+      const jobPosts = await jobModel.find({ jobRole: { $regex: new RegExp(jobRole, 'i') } });
+
+      res.status(200).json(jobPosts);
+    } catch (error) {
+      console.log("Error");
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+export const filterJobs = async (req, res) => {
+  try {
+    const { jobRoles, experienceLevels, locations, employmentTypes } = req.query;
+    // console.log(jobRoles)
+    // console.log(experienceRange)
+    // console.log(locations)
+    // console.log(employmentTypes)
+
+    const filters = {}; 
+
+    if (jobRoles) {
+        filters.jobRole = { $regex: new RegExp(jobRoles, 'i') };
+    }
+  
+    if (locations) {
+        filters.locations = { $regex: new RegExp(locations, 'i') };
+    }
+
+    if (employmentTypes) {
+        filters.employmentType = { $regex: new RegExp(employmentTypes, 'i') };
+    }
+
+    if (experienceLevels) {
+        const [minExperience, maxExperience] = experienceLevels.split('-');
+        filters.experience = {
+          $gte: parseInt(minExperience, 10),
+          $lte: parseInt(maxExperience, 10),
+        };
+    }
+
+    // console.log(filters)
+
+    const jobPosts = await jobModel.find(filters);
+
+    res.status(200).json(jobPosts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
 export const deleteJob = async(req, res) =>{
     const {id} = req.params
 

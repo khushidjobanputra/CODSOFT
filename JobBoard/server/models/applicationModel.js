@@ -24,9 +24,10 @@ const Application = new mongoose.Schema({
   linkedInProfile: {
     type: String
   }, 
-  // resume: {
-  //   type: String
-  // }, 
+  resume: {
+    type: Buffer, // Store the PDF file as a Buffer
+    required: true
+  }, 
   previousJobExperience: { 
     type: String, 
     required: true 
@@ -59,14 +60,10 @@ const Application = new mongoose.Schema({
     type: String, 
     required: true 
   },
-  jobId: {
-    type: String,
-    required: true
-  },
   step: {
     type: 'string',
-    enu: ['application', 'shortlisting', 'selected'],
-    default: 'application'
+    enu: ['Applied', 'Shortlisted', 'Selected'],
+    default: 'Applied'
   },
 });
 

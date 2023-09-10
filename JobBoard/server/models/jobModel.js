@@ -9,6 +9,10 @@ const jobModel = mongoose.Schema({
         type: String,
         required: true
     },
+    // companyLogo:{
+    //     data: Buffer,
+    //     contentType: String
+    // },
     description:{
         type: String,
         required: true
@@ -55,6 +59,12 @@ const jobModel = mongoose.Schema({
         type: String, 
         required: true  
     },
+    applicants: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Application'
+        }
+    ]
 })
 
 export default mongoose.model("jobModel", jobModel)

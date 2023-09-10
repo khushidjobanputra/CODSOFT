@@ -13,13 +13,17 @@ import {
   Stack,
   Radio,
   useToast,
-  Select
+  Select,
+  IconButton
 } from '@chakra-ui/react';
-import {ViewOffIcon} from '@chakra-ui/icons'
+import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClick = () => setShowPassword(!showPassword)
     const toast = useToast()
     const [role, setRole] = useState('Candidate')
     const [userName, setUserName] = useState('')
@@ -62,12 +66,11 @@ const SignUp = () => {
     <Flex
       align="center"
       justify="center"
-      minHeight="100vh"
-      backgroundColor="#E0E3E9"
-      p={4}
+      minHeight="90vh"
+      backgroundColor="#F4F8FF"
     >
       <Box
-        width="90%"
+        width="70%"
         height="90%"
         p={2}
         backgroundColor="white"
@@ -113,28 +116,43 @@ const SignUp = () => {
               <Input
                 name="password"
                 placeholder="Password"
+                type={showPassword ? 'text' : 'password'}
                 boxShadow="#E0EDFB"
                 size='lg'
                 onChange={(e)=> setPassword(e.target.value)}
                 value={password}
                 />
               <InputRightElement position='relative'>
-                <ViewOffIcon mr={20} mt={2}/>
+                <IconButton
+                  icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  mr={20}
+                  mt={2}
+                  onClick={handleClick}
+                />
               </InputRightElement>
             </InputGroup>
 
             <InputGroup mt={4}>
               <Input
                 name="Cpassword"
+                type='password'
+                // type={showPassword ? 'text' : 'password'}
                 placeholder="Confirm Password"
                 boxShadow="#E0EDFB"
                 size='lg'
                 onChange={(e)=> setConfirmPassword(e.target.value)}
                 value={confirmPassword}
                 />
-              <InputRightElement position='relative'>
-                <ViewOffIcon mr={20} mt={2}/>
-              </InputRightElement>
+              {/* <InputRightElement position='relative'>
+                <IconButton
+                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    mr={20}
+                    mt={2}
+                    onClick={handleClick}
+                />
+              </InputRightElement> */}
             </InputGroup>
 
             <Select placeholder='Select option' mt={4} onChange={(e) => setRole(e.target.value)}>
@@ -143,18 +161,21 @@ const SignUp = () => {
             </Select>
 
             <Button
-              bgColor='#FE6B68'
+              bgColor='rgb(238,120,107)'
               boxShadow="#E8D5E6"
               mt={6}
               // width="50%"
               size='lg'
               color='white'
               onClick={handleRegister}
+              mb={3}
               >
               Sign Up
             </Button>
-            <Text>Already registered?</Text>
-            <Text onClick={()=>{navigate('/login')}} cursor={'pointer'}>Login</Text>
+            <Box display='flex' flexDirection='row'>
+              <Text>Already registered?</Text>
+              <Text onClick={()=>{navigate('/login')}} cursor={'pointer'} sx={{'_hover': {color: 'rgb(238,120,107)'}}}>Login</Text>
+            </Box>
             </Grid>
           </Box>
         </Flex>

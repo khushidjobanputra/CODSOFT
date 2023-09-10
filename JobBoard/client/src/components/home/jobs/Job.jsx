@@ -3,14 +3,17 @@ import React, { useEffect, useState } from 'react'
 import {BsBookmarkDashFill} from 'react-icons/bs'
 import {AiOutlineDollar} from 'react-icons/ai'
 import {HiMiniUserGroup} from 'react-icons/hi2'
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import { useJobContext } from '../../../context/jobContext'
 
-const Job = () => {
-
-    const navigate = useNavigate();
+const Job = ({searchResults}) => {
     
-    const jobs = useJobContext();
+    // console.log(searchResults)
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const Alljobs = useJobContext();
+    let jobs;
 
     const handleClick=(jobId)=>{
         const companyDetailsURL = `/companyDetails/${jobId}`;
@@ -18,20 +21,28 @@ const Job = () => {
         navigate(companyDetailsURL);
     }
 
-    const getDate = ({timestamp})=>{
-        const date = new Date(timestamp);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-
-        const formattedDate = `${year}-${month}-${day}`;
-
-        return formattedDate
+    if(searchResults){
+        jobs = searchResults;
     }
+    else{
+        jobs = Alljobs;
+    }
+
+    // const getDate = ({timestamp})=>{
+    //     const date = new Date(timestamp);
+    //     const year = date.getFullYear();
+    //     const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    //     const day = date.getDate().toString().padStart(2, '0');
+
+    //     const formattedDate = `${year}-${month}-${day}`;
+
+    //     return formattedDate
+    // }
+
   return (
     <div>
         {
-            jobs.map((job)=>(
+            jobs?.map((job)=>(
                 <Card p={4} borderRadius='15px' marginBottom='5' key={job.id}>
                     <CardBody>
                         <Box display='flex' justifyContent='space-between'>

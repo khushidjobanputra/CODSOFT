@@ -51,6 +51,7 @@ const JobApplicants = () => {
                   'Authorization': `Bearer ${authToken}`
                 },
               })
+              console.log(response)
               setApplicants(response);
           }catch(error){
               console.log(error);
@@ -77,7 +78,7 @@ const JobApplicants = () => {
                         <Icon as={HiMiniUserGroup}/> {jobPost?.numberOfOpenings} openings
                     </Box>
                 </Box>
-                <Heading size='sm'>23 Applicants</Heading>
+                {/* <Heading size='sm'>23 Applicants</Heading>   */}
               </Card>
             </SimpleGrid>
           </Flex>
