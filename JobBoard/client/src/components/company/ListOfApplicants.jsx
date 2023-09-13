@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
 import { TableContainer, Table, Thead, Tr, Th, Td, Tbody, Button, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Text, Heading, Menu, MenuButton, MenuList, MenuItem, SimpleGrid, Select, useToast } from '@chakra-ui/react'
 import axios from 'axios';
-import { Router } from 'react-router-dom';
+import { Router, useLocation } from 'react-router-dom';
 
 const ListOfApplicants = ({applicants}) => {
+
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const jobId = queryParams.get("jobId");  
+  const companyName = queryParams.get("companyName");  
+  // console.log(jobId, companyName)
 
     const toast = useToast();
     // const router = useRouter();
@@ -33,7 +40,7 @@ const ListOfApplicants = ({applicants}) => {
           'Authorization': `Bearer ${authToken}`
         },
       })
-
+      
       const resp = await axios.post(`${process.env.REACT_APP_API}/api/sendEmail`, {
         to: `${currentApplicant.email}`,
         subject: `Application ${status} successfully`,
@@ -71,6 +78,28 @@ const ListOfApplicants = ({applicants}) => {
         })
       }
       console.log(response)
+
+      if (status === 'Selected') {
+        const jobUpdateResponse = await axios.patch(
+          `${process.env.REACT_APP_API}/jobs/update/${jobId}`,
+          {
+            $inc: { numberOfOpenings: -1 }, // Decrease numberOfOpenings by 1
+          },
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken}`,
+            },
+          }
+        );
+    
+        if (jobUpdateResponse.status === 200) {
+          console.log('numberOfOpenings updated successfully');
+        } else {
+          console.error('Error updating numberOfOpenings');
+        }
+      }
       onClose()
     }
     
@@ -97,9 +126,13 @@ const ListOfApplicants = ({applicants}) => {
                             <Td>{applicant.phoneNumber}</Td>
                             <Td><Button>
                               <a
-                                href={applicant.resume} // Assuming 'applicant.resume' contains the URL to the PDF file
+                                href={`../../images/${applicant?.resume}`} // Assuming 'applicant.resume' contains the URL to the PDF file
                                 target="_blank" // Open the link in a new tab
                                 rel="noopener noreferrer" // Recommended for security
+                                onClick={(e) => {
+                                  e.preventDefault(); // Prevent the default behavior of following the link
+                                  window.open(e.currentTarget.getAttribute('href'), '_blank'); // Open the PDF in a new tab
+                                }}
                               >
                                 View Resume
                               </a>

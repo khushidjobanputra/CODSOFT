@@ -11,21 +11,27 @@ const AllJobPosts = ({id}) => {
     const navigate = useNavigate();
     const [jobPosts, setJobPosts] = useState([]);
 
-    // const handleClick=()=>{
-    //     navigate(`/jobApplicants`)
-    // }
     const handleClick=(companyName, id)=>{
         const url = `/jobApplicants?companyName=${companyName}&jobId=${id}`;
         navigate(url)
     }
 
-    // console.log(id)
-
+    const userDataString = localStorage.getItem('auth');
+    const userData = JSON.parse(userDataString);
+    const authToken = userData.token;
+    
     useEffect(()=>{
 
         const fetchData = async()=>{
             try{
-                const response = await axios.get(`${process.env.REACT_APP_API}/jobs?companyId=${id}`)
+                console.log(id)
+                const response = await axios.get(`${process.env.REACT_APP_API}/jobs/companyId/${id}`, {
+                    method: 'GET',
+                    headers: { 
+                      'Content-Type': 'application/json', 
+                      'Authorization': `Bearer ${authToken}`
+                    }
+                })
                 setJobPosts(response.data)
             }catch(error){
                 console.log(error);
@@ -44,22 +50,14 @@ const AllJobPosts = ({id}) => {
                         <CardBody>
                             <Box display='flex' justifyContent='space-between'>
                                 <Box display='flex'>
-                                    <Box bgColor={'rgb(248,250,252)'} height='40px' width='40px' align='center' mr={3}>
+                                    {/* <Box bgColor={'rgb(248,250,252)'} height='40px' width='40px' align='center' mr={3}>
                                         <Image src='https://cdn-icons-png.flaticon.com/512/2111/2111320.png' height='30px' width='30px'/>
-                                    </Box>
+                                    </Box> */}
                                     <Box mb={2}>
                                         <Heading size='sm'>{jobPost.jobRole}</Heading>
                                         <Text color='#CCD2D7'>{jobPost.companyName} - {jobPost.employmentType}</Text>
                                     </Box>
                                 </Box>
-                                {/* <Button
-                                    bgColor={'rgb(248,250,252)'}
-                                    color={'#2A9FB9'}
-                                    mb={5}
-                                >
-                                    Save Job
-                                    <Icon as={BsBookmarkDashFill} ml={2}/>
-                                </Button> */}
                             </Box>
                             <Box>
                                 <Text color='#CCD2D7'>{jobPost.description}</Text>
@@ -67,7 +65,7 @@ const AllJobPosts = ({id}) => {
                             <Grid display='flex' spacing='30px' mt={2}>
                                 {
                                     jobPost.skills.map((skill)=>(
-                                        <Tag bgColor={'rgb(248,250,252)'} p={2}>{skill}</Tag>
+                                        <Tag bgColor={'rgb(248,250,252)'} border="2px" borderColor="rgb(238,120,107)" mr={2} p={2}>{skill}</Tag>
                                     ))
                                 }
                             </Grid>

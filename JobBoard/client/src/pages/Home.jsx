@@ -1,12 +1,18 @@
 import { Box, Button, Heading, Image, SimpleGrid, Text } from '@chakra-ui/react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/authContext';
+import EmptyState from '../components/EmptyState';
 
 const Home = () => {
     const navigate = useNavigate();
 
+    const [auth, setAuth] = useAuth();
+
     const handleClick = ()=>{
-        navigate('/jobs')
+        {
+            auth?.user ? navigate('/jobs') : navigate('/login')
+        }
     }
   return (
     <div>

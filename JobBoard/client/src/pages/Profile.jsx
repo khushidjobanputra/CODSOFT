@@ -14,7 +14,7 @@ const HomePage = () => {
   const {id} = useParams();
   // console.log(id)
   const heading = auth?.user?.userName;
-  const subHeading = 'Junior react developer';
+  const subHeading = auth?.user?.role;
   const buttonLabel = 'View Profile'
 
   return (
@@ -25,8 +25,8 @@ const HomePage = () => {
             <SimpleGrid columns={[1, null, 1]} spacing='15px'>
               <Profile heading={heading} subHeading={subHeading} buttonLabel={buttonLabel}/>
               <Info id={id}/>
-              <WorkExperience />
-              <Skills />
+              {/* <WorkExperience /> */}
+              {/* <Skills /> */}
             </SimpleGrid>
           </Flex>
         </Box>

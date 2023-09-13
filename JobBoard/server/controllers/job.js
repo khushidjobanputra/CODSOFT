@@ -41,6 +41,24 @@ export const getJob = async(req, res) =>{
     }
 }
 
+export const getBYCompanyId = async (req, res) => {
+    try {
+      const { companyId } = req.params;
+  
+      const jobPosts = await jobModel.find({ companyId });
+      if (jobPosts.length === 0) {
+        console.log("no jobs")
+        return res.status(404).json({ message: 'No job posts found.' });
+      }
+
+      res.status(200).json(jobPosts);
+    } catch (error) {
+      console.log("Error");
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 export const getJobsBySearch = async (req, res) => {
     try {
       const { jobRole } = req.query;

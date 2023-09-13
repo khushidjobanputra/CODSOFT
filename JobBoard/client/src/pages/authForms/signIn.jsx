@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import axios from 'axios';
 import { useAuth } from '../../context/authContext';
+import image from '../../Images/1554239632.jpeg'
 
 const SignIn = () => {
 
@@ -80,7 +81,7 @@ const SignIn = () => {
       >
         <Flex direction="row" align="center">
           <Box flex='1'>
-            <Image src='https://images.businessnewsdaily.com/app/uploads/2022/04/04081920/1554239632.jpeg' alt="Sign In" borderRadius="18px" width="40vw" height="80vh" />
+            <Image src={image} alt="Sign In" borderRadius="18px" width="40vw" height="80vh" />
           </Box>
           
           <Box flex='1'>

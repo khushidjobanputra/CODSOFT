@@ -24,7 +24,7 @@ const HomePage = () => {
   const authToken = userData.token;
 
   const heading = auth?.user?.userName;
-  const subHeading = 'Junior react developer';
+  const subHeading = auth?.user?.role;
   const buttonLabel = 'View Profile'
 
   const location = useLocation();
@@ -95,35 +95,14 @@ const HomePage = () => {
                   <></>
                 )
               }
-            </SimpleGrid>
-          </Flex>
-        </Box>
-        <Box width={'50vw'}>
-          <Flex flexDirection='column'>
-            <SimpleGrid columns={[1, null, 1]} spacing='15px'>
-              <Search length={jobPosts.length}/>
-              {
-                jobPosts.length > 0 ? (<Job searchResults={jobPosts} />): (
-                  <>
-                    {
-                      jobRole ? (<Job searchResults={searchResults}/>) : (<Job />)
-                    }
-                  </>
-                )
-              }
-            </SimpleGrid>
-          </Flex>
-        </Box>
-        <Box width={'16vw'}>
-          <Flex flexDirection='column'>
-            <SimpleGrid columns={[1, null, 1]} spacing='15px'>
-            <Button
+              <Button
               variant={'solid'}
               bgColor= 'rgb(238,120,107)'
               color= 'white'
               size={'md'}
               p={2}
               onClick={() => handleApplyFilters()} 
+              sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
               >
               Apply Filters
               </Button>
@@ -134,6 +113,41 @@ const HomePage = () => {
             </SimpleGrid>
           </Flex>
         </Box>
+        <Box width={'72vw'}>
+          <Flex flexDirection='column'>
+            <Search/>
+              {
+                jobPosts.length > 0 ? (<Job searchResults={jobPosts} />): (
+                  <>
+                    {
+                      jobRole ? (<Job searchResults={searchResults}/>) : (<Job />)
+                    }
+                  </>
+                )
+              }
+          </Flex>
+        </Box>
+        {/* <Box width={'16vw'}>
+          <Flex flexDirection='column'>
+            <SimpleGrid columns={[1, null, 1]} spacing='15px'>
+            <Button
+              variant={'solid'}
+              bgColor= 'rgb(238,120,107)'
+              color= 'white'
+              size={'md'}
+              p={2}
+              onClick={() => handleApplyFilters()} 
+              sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
+              >
+              Apply Filters
+              </Button>
+              <ExperienceLevel />
+              <Location />
+              <JobRole />
+              <JobType />
+            </SimpleGrid>
+          </Flex>
+        </Box> */}
       </Grid>
     </Box>
   );

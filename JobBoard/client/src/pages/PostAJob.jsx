@@ -10,7 +10,7 @@ const PostAJob = () => {
 
   const [ auth, setAuth] = useAuth();
   const heading = auth?.user?.userName;
-  const subHeading = 'Hiring';
+  const subHeading = auth?.user?.role;
   const buttonLabel = 'View all job posts'
   const {id} = useParams();
 

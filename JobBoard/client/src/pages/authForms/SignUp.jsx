@@ -169,6 +169,7 @@ const SignUp = () => {
               color='white'
               onClick={handleRegister}
               mb={3}
+              sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
               >
               Sign Up
             </Button>

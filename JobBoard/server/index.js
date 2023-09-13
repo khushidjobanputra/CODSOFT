@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/user.js';  
 import jobRoutes from './routes/jobRoutes.js';  
 import applicationRoutes from './routes/applicationRoutes.js'
+import saveJobRoutes from './routes/savedJobsRoutes.js'
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser'
 import sendEmail from './routes/sendEmail.js'
@@ -40,6 +41,7 @@ app.use('/user', userRoutes)
 app.use('/jobs', jobRoutes)
 app.use('/application', applicationRoutes)
 app.use('/api', sendEmail)
+app.use('/saveJob', saveJobRoutes)
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);

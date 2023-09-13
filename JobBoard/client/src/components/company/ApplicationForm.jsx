@@ -22,7 +22,7 @@ const steps = [
   'Projects/Portfolio',
 ];
 
-const ApplicationForm = ({id}) => {
+const ApplicationForm = ({id}) => { 
 
   const userDataString = localStorage.getItem('auth');
   const userData = JSON.parse(userDataString);
@@ -48,7 +48,6 @@ const ApplicationForm = ({id}) => {
       setStep(step - 1);
     }
   };
-
 
   const handleAddProjectLink = () => {
     setShowProjectInput(true);
@@ -78,7 +77,7 @@ const ApplicationForm = ({id}) => {
       [field]: value,
     }));
   };
-  // console.log(userData);
+  // console.log(formData);
 
   const handleSubmit = async() =>{
 
@@ -87,7 +86,7 @@ const ApplicationForm = ({id}) => {
       const response = await axios.post(`${process.env.REACT_APP_API}/application/create`, formData, {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json', 
+          'Content-Type': 'multipart/form-data', 
           'Authorization': `Bearer ${authToken}`
         },
       })
@@ -183,7 +182,7 @@ const ApplicationForm = ({id}) => {
           <>
              <FormControl mb="4">
                 <FormLabel>Upload Resume/CV</FormLabel>
-                <Input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleInputChange('resume', e.target.files[0])} />
+                <Input type="file" accept="image/*" onChange={(e) => handleInputChange('resume', e.target.files[0])} />
             </FormControl>
           </>
         )}

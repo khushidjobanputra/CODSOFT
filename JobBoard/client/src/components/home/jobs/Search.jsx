@@ -4,8 +4,11 @@ import {Search2Icon} from '@chakra-ui/icons'
 import { useSearch } from '../../../context/searchContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useJobContext } from '../../../context/jobContext';
 
-const Search = ({length}) => {
+const Search = () => {
+    // console.log(length)
+    const Alljobs = useJobContext();
 
     const { updateSearchResults, searchResults, searchTerm, setSearchTerm } = useSearch(); // Use the context
 
@@ -16,6 +19,7 @@ const Search = ({length}) => {
     const authToken = userData.token;
   
     const navigate = useNavigate();
+    // console.log(searchResults)
 
     const handleSearch = async (event) => {
         if (event.key === 'Enter') {
@@ -54,7 +58,7 @@ const Search = ({length}) => {
                     bgColor={'rgb(248,250,252)'}
                     color={'#2A9FB9'}
                     mt={4}
-                >{length} Jobs Found</Button>
+                >{searchResults.length == 0 ? Alljobs.length : searchResults.length} Jobs Found</Button>
             </Box>
         </Card>
     </div>

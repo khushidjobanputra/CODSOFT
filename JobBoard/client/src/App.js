@@ -11,6 +11,8 @@ import SignUp from './pages/authForms/SignUp';
 import SignIn from './pages/authForms/signIn';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
+import SavedJobs from './pages/SavedJobs';
+import Images from './pages/Image';
 
 function App() {
   return (
@@ -22,8 +24,10 @@ function App() {
           <Route path='/jobs' element={<HomePage />}/>
           <Route path='/jobs/search' element={<HomePage />}/>
           <Route path='/jobs/filters' element={<HomePage />}/>
+          <Route path='/images/:id' element={<Images />} />
           <Route path='/signup' element={<SignUp />}/>
           <Route path='/login' element={<SignIn />}/>
+          <Route path='/savedJobs' element={<SavedJobs />}/>
           <Route path='/CompanyDetails/:id' element={<CompanyDetails />}/>
           <Route path='/CompanyDashboard/:id' element={<CompanyDashboard />}/>
           <Route path='/jobApplicants' element={<JobApplicants />}/>

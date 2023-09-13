@@ -6,10 +6,12 @@ import {LiaMoneyBillSolid} from 'react-icons/lia'
 import {RxLapTimer} from 'react-icons/rx'
 import ApplicationForm from './ApplicationForm'
 import axios from 'axios';
+import { useAuth } from '../../context/authContext'
 
 const CompanyDetail = ({id}) => {
 
     const [job, setJob] = useState(null);
+    const [auth, setAuth] = useAuth();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,13 +31,13 @@ return (
         { job && (
         <Card borderRadius='15px'>
             <CardBody align='left' display='flex'>
-                <Image
+                {/* <Image
                     src='https://cdn-icons-png.flaticon.com/512/2111/2111320.png'
                     alt='Profile Image'
                     borderRadius='full'
                     boxSize='100px'
                     mb={5}
-                />
+                /> */}
                 <Stack marginLeft={5} marginTop={5}>
                     <Heading size='lg'>{job.companyName}</Heading>
                     <Heading size='md'>{job.jobRole}</Heading>
@@ -79,7 +81,7 @@ return (
                             <HStack mb={8} spacing={5}>
                                 {
                                     job.skills?.map((skill)=>(
-                                        <Tag sixe='lg' variant='solid' bgColor='rgb(238,120,107)' p={2} fontSize='15px'>
+                                        <Tag size='lg' bgColor={'rgb(248,250,252)'} border="2px" borderColor="rgb(238,120,107)" mr={2} p={2}>
                                         {skill}
                                         </Tag>
                                     ))
@@ -91,21 +93,28 @@ return (
 
                             <Heading size='md' mb={2}>No. of openings</Heading>
                             <Text mb={5}>{job.numberOfOpenings}</Text>
-
-                            <Button
-                            variant={'solid'}
-                            bgColor= 'rgb(238,120,107)'
-                            color= 'white'
-                            size={'md'}
-                            width='10rem'
-                            p={2}
-                            sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
-                            >
-                            Apply
-                            </Button>
+                            {/* {
+                                auth?.user?.role == 'Candidate' && <Button
+                                variant={'solid'}
+                                bgColor= 'rgb(238,120,107)'
+                                color= 'white'
+                                size={'md'}
+                                width='10rem'
+                                p={2}
+                                sx={{'_hover': {backgroundColor: '#E2E8F0', color: '#2A9FB9'}}}
+                                >
+                                Apply
+                                </Button>
+                            } */}
                             </TabPanel>
                             <TabPanel>
-                            <ApplicationForm id={id} />
+                                {
+                                    auth?.user?.role == 'Candidate' ? (
+                                        <ApplicationForm id={id} />
+                                    ) : (
+                                        <Heading size='lg'>Application is only for Candidates.</Heading>
+                                    )
+                                }
                             </TabPanel>
                         </TabPanels>
                     </Tabs>

@@ -205,6 +205,7 @@ export default function WithAction() {
               </MenuButton>
                 <Text>{auth?.user?.userName}</Text>
               <MenuList>
+                <MenuItem onClick={()=> navigate('/savedJobs')}>Saved Jobs</MenuItem>
                 {
                   auth?.user?.role === 'Employer' ? (
                     <>

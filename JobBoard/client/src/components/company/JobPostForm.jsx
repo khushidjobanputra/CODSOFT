@@ -13,7 +13,7 @@ const JobPostForm = ({id}) => {
   const [locationInput, setLocationInput] = useState('');
   const [salary, setSalary] = useState([50000, 100000]);
   const [companyName, setCompanyName] = useState('');
-  const [companyLogo, setCompanyLogo] = useState(null);
+//   const [companyLogo, setCompanyLogo] = useState(null);
   const [jobRole, setJobRole] = useState('');
   const [numberOfOpenings, setNoOfOpenings] = useState('');
   const [experience, setExperience] = useState('');
@@ -47,10 +47,10 @@ const JobPostForm = ({id}) => {
     setLocations(locations.filter((s) => s !== location));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setCompanyLogo(file);
-  };
+//   const handleImageChange = (e) => {
+//     const file = e.target.files[0];
+//     setCompanyLogo(file);
+//   };
 
   const userDataString = localStorage.getItem('auth');
   const userData = JSON.parse(userDataString);
@@ -71,7 +71,7 @@ const JobPostForm = ({id}) => {
         const response = await axios.post(`${process.env.REACT_APP_API}/jobs/create`, data,{
             method: 'Post',
             headers: { 
-                'Content-Type': 'multipart/form-data', 
+                'Content-Type': 'application/json', 
                 'Authorization': `Bearer ${authToken}`
             },
         })
@@ -111,8 +111,8 @@ const JobPostForm = ({id}) => {
                     <Box>
                         <FormLabel>Company Name</FormLabel>
                         <Input placeholder='Company Name' mb={5} value={companyName} onChange={(e)=> {setCompanyName(e.target.value)}}/>
-                        <FormLabel>Company Logo</FormLabel>
-                        <Input type="file" accept="image/*" onChange={(e)=>handleImageChange(e)}  mb={5}/>
+                        {/* <FormLabel>Company Logo</FormLabel>
+                        <Input type="file" accept="image/*" onChange={(e)=>handleImageChange(e)}  mb={5}/> */}
                         <FormLabel>Title</FormLabel>
                         <Input placeholder='title' mb={5} value={title} onChange={(e)=> {setTitle(e.target.value)}}/>
                         <Box mb="2">

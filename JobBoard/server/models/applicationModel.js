@@ -25,8 +25,8 @@ const Application = new mongoose.Schema({
     type: String
   }, 
   resume: {
-    type: Buffer, // Store the PDF file as a Buffer
-    required: true
+    type: String,
+    required: false
   }, 
   previousJobExperience: { 
     type: String, 
